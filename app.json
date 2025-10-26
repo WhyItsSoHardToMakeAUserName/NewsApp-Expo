@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "NewsApp-Expo",
-    "slug": "NewsApp-Expo",
+    "slug": "newsappexpo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -43,6 +43,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ac1e29e8-4ccc-413e-a190-75bb502fec89"
+      }
+    },
+    "owner": "tumbler"
   }
 }

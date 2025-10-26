@@ -1,6 +1,8 @@
 import NewsCard from "@/components/news-card";
+import { usePushNotifications } from "@/hooks/use-push-notifications";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import React from "react";
+import * as Notifications from "expo-notifications";
+import React, { useEffect, useRef } from "react";
 import { ActivityIndicator, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -17,8 +19,10 @@ type NewsResponse = {
 };
 
 export default function HomeScreen() {
+  const isFirstFetch = useRef(true);
   const apiKey = process.env.EXPO_PUBLIC_NEWS_API_KEY;
   const apiBaseUrl = "https://newsapi.org/v2/everything?";
+  usePushNotifications();
 
   const fetchNews = async ({ pageParam = new Date().toISOString() }): Promise<NewsResponse> => {
     const res = await fetch(
@@ -37,6 +41,21 @@ export default function HomeScreen() {
       return articles[articles.length - 1].publishedAt;
     },
   });
+
+  useEffect(() => {
+    if (isFirstFetch.current) {
+      isFirstFetch.current = false;
+      return;
+    }
+
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "New article!",
+        body: "Check out the latest news.",
+      },
+      trigger: null,
+    })
+  }, [data]);
 
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 10 }}>
