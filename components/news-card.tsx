@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 type NewsCardProps = {
@@ -9,8 +10,12 @@ type NewsCardProps = {
 };
 
 export default function NewsCard({ title, description, urlToImage, publishedAt, url }:NewsCardProps) {
+  const router = useRouter();
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => router.push({ pathname: '/article', params: { title, description, urlToImage, publishedAt, url } })}
+    >
       <View style={{ marginBottom: 15, backgroundColor: '#fff', borderRadius: 10, overflow: 'hidden' }}>
         {urlToImage && (
           <Image source={{ uri: urlToImage }} style={{ height: 200, width: '100%' }} resizeMode="cover" />
